@@ -1,0 +1,19 @@
+	<% for fileuser in @fileusers %>
+		<%= hidden_field_tag "fileuser_ids[]", fileuser.id %>
+	<% end %>
+	
+			
+
+  <div class="field">
+    <% f.label :permission_flag %>
+    
+    <%= f.radio_button :permission_flag, 1 %><%= "Can View" %>
+    <%= f.radio_button :permission_flag, 0 %><%= "Can't View" %>
+    <%= f.hidden_field :attachment_id %>
+
+
+
+
+
+  </div>
+  <br/>

@@ -1,0 +1,16 @@
+o: ActiveSupport::Cache::Entry	:@compressedF:@expires_in0:@created_atf1393946817.1425505:@value"m	I"a	<p>The process:  I, a User, has a concern about something that has not been considered or needs to be considered. I would create an Issue to describe the consideration. As a policy we could recommend to clients that Issue authors must create a potential resolution path by creating Tasks as Children to the Issue. So to make the process efficient, I, a User, would need to create the associated tasks I believe will resolve the Issue and make Responsible party assignments and designate Watchers that represent the team members that need to have a discussion about resolving the Issue.</p>
+
+
+	<p>Ideally, we would need to assign the several individual resolution team members to the main Issue directly, but this can be accomplished by:</p>
+
+
+	<p>1. Author creates an Issue<br />2. Author then creates Tasks as Child items of the Issue to initially describe Resolution activity<br />3. Assigns the initial designated responsible party to Tasks created in #2<br />4. Assigns other resolution team members as Watchers<br />5. Assignees and Watchers discuss the Issue and related Tasks<br />6. A resolution path is agreed upon and final resolution tasks and associated assignments are decided and updated</p>
+
+
+	<p>For example:<br />Issue - Do we need to default Item Start Date?<br />Task 1 - What is current method? Default to Item creation date.<br />Task 2 - Discuss alternative methods - i.e. none, project start, default Parent if subtask, etc.<br />Task 3 - Review Implications of alternatives<br />Task 4 - Choose best option</p>
+
+
+	<p>The tasks would be given priorities, start dates, completion dates etc. and assigned to individuals on the designated resolution team. Watchers would also be selected and would be part of the resolution team that has the initial discussion about the issue.</p>
+
+
+	<p>Implications: Assigning multiple people is not possible. Without the ability to assign multiple people to any one Issue, users will have to resort to selecting Watchers and making final resolution assignments when the Issue is discussed and resolution path determined. Watchers should be assigned at the initial Issue and associated Task creation time, but can be added later.<br />We could change the DB to capture the Originator (Author) of the issue AND allow multiple people to be assigned to the item as "the resolution team". But, we want to avoid database changes at this late date.</p>:EF

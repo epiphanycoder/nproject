@@ -1,0 +1,24 @@
+o: ActiveSupport::Cache::Entry	:@compressedF:@expires_in0:@created_atf1394817962.241515:@value"¹
+I"­
+<p>The 244 server (IP 66.196.248.244) was not accessible since earlier in March 2014. Attempts were made at re-booting and re-configuring, but the server remained ping enabled only. No remote network access was possible through the IP address via browser or on direct network access tools. After several attempts at rebooting and remote support to Aubrey from Suk and Reza, it was determined that a local technical resource should be called in to assist in troubleshooting and re-establishing network accessibility.</p>
+
+
+	<p>Austin Mlady from Dallas Computer Techs was engaged (see contact info in attached files, phone 214-444-9638).</p>
+
+
+	<p>Again, the tech's attempts at establishing and making the network connection accessible through the two currently installed network cards did not succeed. It was determined that no contact with the current cards was possible. The server casing was bent somehow previously and either this caused the cards to eventually burn out or lose connection or they burned out spontaneously due to some other cause. In reviewing the situation, it was determined that the server had not been "hacked" so that was not the cause either. Replacing the network card became the next best option to explore.</p>
+
+
+	<p>An internal network card was purchased (Trendnet's Gigabit PCI Express Adapter) to be installed inside the server. The card would not attach in the bent area of the server next to the current cards. It was moved to the left of the current cards and then it was finally possible to screw the card in place for a fit. However, after successful installation, the new card also was not accessible. The server, which should have at least recognized the presence of the newly installed card, did not. None of the direct network access tools could see the card either. All attempts to recognize or get any type of response from the new card failed. The next available remedy was to install a USB network card.</p>
+
+
+	<p>A USB card was purchased along with an extender cable. The extender cable was used too ensure that the USB card would not be susceptible to being "snapped" off either be movement or accidental contact.</p>
+
+
+	<p>The new USB card was configured and network access was restored. Suk verified the availability of the server and got the website at the IP address back in action.</p>
+
+
+	<p>The process with the tech resource took two days and several visits to Fry's for parts. The total cost was $105: $50 for Internal network card (returned), $20 for USB card and cable, $85 for tech service call and time spent.</p>
+
+
+	<p>Recommend using Austin Mlady and Dallas Computer Techs for any further necessary technical issues with servers and configuration in the Dallas office.</p>:EF

@@ -1,0 +1,64 @@
+
+<% file_id = params[:f_id]%>
+
+<% @fileusers = Fileuser.where(:attachment_id => file_id) %>
+
+
+<% file_id = params[:f_id]%>
+
+<% @fileusers = Fileuser.where(:attachment_id => file_id) %>
+
+
+
+<h2> Edit Permission for
+
+<% attachmentnames = Attachment.where(id: file_id).pluck(:filename) %>
+<% for attachmentname in attachmentnames %>
+<%= attachmentname %>
+<% end %>
+
+ </h2>
+<%= form_tag  update_multiple_fileusers_path, :method => :put do %>
+  
+	<% for fileuser in @fileusers %>
+
+	<table >	
+      <%= fields_for "fileusers[]", fileuser do|f| %>
+      	<tr >
+      			<td>
+      				<% u_id = fileuser.user_id %>
+		        	<% userFirstnames = User.where(:id => u_id).pluck(:firstname) %>
+        			<% for uf in userFirstnames %>
+        			<strong><%= uf %></strong>
+        			<% end %>
+        			<% userLastnames = User.where(:id => u_id).pluck(:lastname) %>
+        			<% for ul in userLastnames %>
+        			<strong><%= ul %></strong>
+			        <% end %>
+			    	<%= render "fields", :f =>f %>
+        		</td>
+       	</tr> 		
+        <% end %>
+
+        <% end %>
+   
+    </table>
+
+        <%= submit_tag "Submit" %>
+
+
+
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
