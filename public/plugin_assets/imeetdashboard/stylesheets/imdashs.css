@@ -7,7 +7,7 @@
   padding: 0.125rem;
   margin-bottom: 0.625rem; }
   .progress .meter {
-    background: #008cba;
+    background: #2b9100;
     height: 100%;
     display: block; 
 	color:#fff;}
@@ -17,12 +17,12 @@
     display: block;
     color:#fff; }
   .progress.success .meter {
-    background: #43ac6a;
+    background:  #Effc00;
     height: 100%;
     display: block; 
-	color:#fff;}
+	  color:rgb(80,80,80);}
   .progress.alert .meter {
-    background: #990033;
+    background: #ff0400;
     height: 100%;
     display: block; 
     color:#fff;}

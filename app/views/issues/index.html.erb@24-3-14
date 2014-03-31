@@ -1,4 +1,3 @@
-<%= title "Tasks"%>
 <div class="contextual" style="">
 <% if !@query.new_record? && @query.editable_by?(User.current) %>
   <%= link_to l(:button_edit), edit_query_path(@query), :class => 'icon icon-edit' %>
@@ -6,21 +5,17 @@
 <% end %>
 </div>
 
+<h2><%#= @query.new_record? ? l(:label_issue_plural) : h(@query.name) %> Issues</h2>
 
-<% url_task = url_for(:controller => 'issues', :action => 'new', :copy_from => nil, :param => :project_id, :tracker_id => "4", :tracker_name => "Task", :caption => :label_issue_new,
-              :html => { :accesskey => Redmine::AccessKeys.key_for(:new_issue) })  %>
-
-    <%= link_to "Create New Task", url_task , :class =>  'icon icon-add' , :style => "margin-left: 1110px" %>  
-	<p><%#= button_to "Create Task", url_task, :param => :project_id, :method => :get %></p>
-     
- <%# @tasklist =  @tasks.reject{| v| v.tracker.to_s == 'Issue'} %>
- <%# @qcols =  query.inline_columns.reject{ |col| col.name.to_s == 'id' } %>
+<% url_issue = url_for( :controller => 'issues', :action => 'new', :copy_from => nil, :param => :project_id, :tracker_id => "5", :tracker_name => "Issue", :caption => :label_issue_new, :class => 'icon icon-edit',
+              :html => { :accesskey => Redmine::AccessKeys.key_for(:new_issue) })  %>   
 
 
-<%#= button_to  "See All Files", {:controller => 'fileviews', :action => 'index'}, :caption => "File", :method => :get,  :if => Proc.new { User.current.logged? } %>
-<%# html_title(@query.new_record? ? l(:label_issue_plural) : @query.name) %>
+<p><%= link_to "Create New Issue",url_issue, :class =>  'icon icon-add' , :style => "margin-left: 1110px" %></p>
 
-<%= form_tag({ :controller => 'issues', :action => 'tasks', :project_id => @project },
+<% html_title(@query.new_record? ? l(:label_issue_plural) : @query.name) %>
+
+<%= form_tag({ :controller => 'issues', :action => 'index', :project_id => @project },
             :method => :get, :id => 'query_form') do %>
     <%= hidden_field_tag 'set_filter', '1' %>
     <div id="query_form_content" class="hide-when-print" style="">
@@ -65,14 +60,57 @@
     <%# end %>
     </p>
 <% end %>
+<%#= @query %>
+<%= error_messages_for 'query' %>
+<% if @query.valid? %>
+<% if @issues.empty? %>
+<p class="nodata"><%= l(:label_no_data) %></p>
+<% else %>
+<%= render :partial => 'issues/list', :locals => {:issues => @issues, :query => @query} %>
+<p class="pagination"><%= pagination_links_full @issue_pages, @issue_count %></p>
+<% end %>
 
-<%= render :partial => 'issues/list_task', :locals => {:tasks => @tasks, :query => @query} %>
+<%# other_formats_links do |f| %>
+  <%#= f.link_to 'Atom', :url => params.merge(:key => User.current.rss_key) %>
+  <%#= f.link_to 'CSV', :url => params, :onclick => "showModal('csv-export-options', '330px'); return false;" %>
+  <%#= f.link_to 'PDF', :url => params %>
+<%# end %>
 
+<div id="csv-export-options" style="display:none;">
+  <h3 class="title"><%= l(:label_export_options, :export_format => 'CSV') %></h3>
+  <%= form_tag(params.merge({:format => 'csv',:page=>nil}), :method => :get, :id => 'csv-export-form') do %>
+  <p>
+    <label><%= radio_button_tag 'columns', '', true %> <%= l(:description_selected_columns) %></label><br />
+    <label><%= radio_button_tag 'columns', 'all' %> <%= l(:description_all_columns) %></label>
+  </p>
+  <p>
+    <label><%= check_box_tag 'description', '1', @query.has_column?(:description) %> <%= l(:field_description) %></label>
+  </p>
+  <p class="buttons">
+    <%= submit_tag l(:button_export), :name => nil, :onclick => "hideModal(this);" %>
+    <%= submit_tag l(:button_cancel), :name => nil, :onclick => "hideModal(this);", :type => 'button' %>
+  </p>
+  <% end %>
+</div>
+
+<% end %>
+<%= call_hook(:view_issues_index_bottom, { :issues => @issues, :project => @project, :query => @query }) %>
 
 <%# content_for :sidebar do %>
-     
-    
+<!--edited by suk to make form request for particular tracker-->
+
+
+<!-- custom query added in sidebar -->
+<%# if @query.new_record? && User.current.allowed_to?(:save_queries, @project, :global => true) %>
+        <%#= link_to_function l(:button_save),
+                             "$('#query_form').attr('action', '#{ @project ? new_project_query_path(@project) : new_query_path }'); submit_query_form('query_form')",
+                             :class => 'icon icon-save' %>
+    <%# end %>
+
+ <!--end-->   
+<%#= render :partial => 'issues/sidebar' %>
 <%# end %>
+
 <% content_for :header_tags do %>
     <%= auto_discovery_link_tag(:atom,
                                 {:query_id => @query, :format => 'atom',
@@ -84,4 +122,5 @@
                                  :page => nil, :key => User.current.rss_key},
                                 :title => l(:label_changes_details)) %>
 <% end %>
+
 <%= context_menu issues_context_menu_path %>
