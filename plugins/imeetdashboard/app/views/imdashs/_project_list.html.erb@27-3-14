@@ -7,11 +7,9 @@
     <th rowspan="2"><b><%= "Project" %></b></th>
     <th rowspan="2"><b><%= "Due Date" %></b></th>
     <th rowspan="2"><b><%= "Project Status " %></b></th>
-
     <!--<td><b><%#= "Progress" %></b></td>-->
     <th colspan="2"> Issues</th>
     <th colspan="2"> Tasks </th>
-    <th rowspan="2"> Late % </th>
   </tr>
 <tr bgcolor="#eaeaea">
    
@@ -31,72 +29,19 @@
 <% for project in @projectss %>
    
         <% numberOfissues = Issue.where(project_id: project.id).count %>
-        <% openIssues = Issue.where(project_id: project.id, status_id: [1,2]).count %>
-        <%# resolvedIssues = Issue.where(project_id: project.id, status_id: 3).count %>
+        <% openIssues = Issue.where(project_id: project.id, status_id: [1,2,3]).count %>
+        <% resolvedIssues = Issue.where(project_id: project.id, status_id: 3).count %>
         <% closedIssues = Issue.where(project_id: project.id, status_id: 5).count %>
 
-        <% opIssues = Issue.where(project_id: project.id, status_id: [1,2], :tracker_id => 5).count %>
+        <% opIssues = Issue.where(project_id: project.id, status_id: [1,2,3], :tracker_id => 5).count %>
 
         <% cloIssues = Issue.where(project_id: project.id, status_id: 5, :tracker_id => 5).count %>
 
-        <% opTasks = Issue.where(project_id: project.id, status_id: [1,2], :tracker_id => 4).count %>
+        <% opTasks = Issue.where(project_id: project.id, status_id: [1,2,3], :tracker_id => 4).count %>
 
         <% cloTasks = Issue.where(project_id: project.id, status_id: 5, :tracker_id => 4).count %>
-        <% allTask = Issue.where(project_id: project.id, status_id: [1,2,5], :tracker_id => 4 ) %> 
-        <% allIssue = Issue.where(project_id: project.id, status_id: [1,2,5], :tracker_id => 5 ) %>   
-        
-        <% aT = allTask.count %>
-        <% aI = allIssue.count %>
-        
-        <% dueTask = 0 %> 
-        <% allTask.each do |t|  %>
-       
-        <% if t.due_date? && t.due_date < t.updated_on.to_date  %>
-       
- 
-        <% dueTask+= 1 %>
-        <% end %>
-        <% end %>
-       
-        <% dueIssue = 0 %> 
-        <% allIssue.each do |i|  %>
-        <% if i.due_date? && i.due_date < i.updated_on.to_date %>
-        <% dueIssue+= 1 %>
-        <% end %>
-        <% end %>
-  
-<%#= dueIssue %>
-<%#= dueTask %>
-  <!--progress %-->
-      <% if aT != 0 %>
-      <% ct =  cloTasks.to_f/aT  %>  
-      <% else %> 
-      <% ct =  0  %>  
-      <% end %>
-      <% ctp = (ct*0.75)*100 %>  
-     <% if aI != 0 %>
-      <% ci = cloIssues.to_f/aI  %>
-     <% else %> 
-      <% ci =  0  %>  
-      <% end %>
-      <% cip = (ci*0.25)*100  %>
-      <% progress = (ctp + cip).ceil %>
-<!-- late % calculation by sukanta-->
-        <% if aT != 0 %>
-      <% rt =  dueTask.to_f/aT  %>    
-        <% else %> 
-      <% rt =  0  %>  
-      <% end %>
 
-      <% rtl = (rt*0.75)*100 %>  
-       <% if aI != 0 %>
-      <% ri = dueIssue.to_f/aI  %>
-       <% else %> 
-      <% ri =  0  %>  
-      <% end %>
-      <% ril = (ri*0.25)*100  %>
-      <% late = (rtl + ril).ceil %>
- 
+
 
 <tbody>
     <tr class="file <%= cycle("odd", "even") %>">
@@ -122,30 +67,34 @@
 <% end %>
 
     <td ><b>
-      <% if late.between?(0, 15) %>
+      <% if openIssues==0 %>
       <%#= image_tag '/plugin_assets/imeetdashboard/images/green.jpg', :size  => '22x22' %> 
-       
+
       <div class="nice round progress large-6"> 
-      <span class="meter" style="width: <%= progress %>%"><%= progress %>%</span> 
+      <span class="meter" style="width: <%= percent %>%"><%= percent %>%</span> 
       </div>
 
-      <% elsif late.between?(16, 60)  %>
+      <% elsif (openIssues/numberOfissues)>0.5 %>
 
        <div class="nice round progress success large-10"> 
-      <span class="meter" style="width: <%= progress %>%"><%= progress %>%</span> 
+      <span class="meter" style="width: <%= percent %>%"><%= percent %>%</span> 
       </div>
 
       <%#= image_tag '/plugin_assets/imeetdashboard/images/red.jpg', :size  => '22x22' %> 
       
-      <% elsif late.between?(61, 100) %>
+      <% elsif (openIssues/numberOfissues)<0.5 %>
 
        <div class="nice round progress alert large-10"> 
-      <span class="meter" style="width: <%= progress %>%"><%= progress %>%</span> 
+      <span class="meter" style="width: <%= percent %>%"><%= percent %>%</span> 
       </div>
 
 <%#= image_tag '/plugin_assets/imeetdashboard/images/yellow.jpg', :size  => '22x22'  %>
 
-
+<% else %>
+      <%#= image_tag '/plugin_assets/imeetdashboard/images/green.jpg', :size  => '22x22'  %>
+      <div class="nice round progress large-6"> 
+      <span class="meter" style="width: <%= percent %>%"><%= percent %>%</span> 
+      </div>
 <%end %>
 </td>
 
@@ -171,11 +120,9 @@
       <%= link_to cloIssues, project_issues_path(project, :status_id => 'c', :set_filter => 1, :tracker_id => 5) %>
 </td>
     
-<td> <%= link_to opTasks, :controller => 'issues', :action => 'tasks', :project_id => project.id, :status_id => 'o', :set_filter => 1, :tracker_id => 4 %></td>
-<td> <%= link_to cloTasks,  :controller => 'issues', :action => 'tasks', :project_id => project.id, :status_id => 'c', :set_filter => 1, :tracker_id => 4 %></td>
+<td> <%= link_to opTasks, project_issues_path(project, :status_id => 'o', :set_filter => 1, :tracker_id => 4) %></td>
+<td> <%= link_to cloTasks, project_issues_path(project, :status_id => 'c', :set_filter => 1, :tracker_id => 4) %></td>
   
-<td><%= late %>%</td>
-
 <% end %>
 
 

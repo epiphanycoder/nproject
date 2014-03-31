@@ -13,8 +13,8 @@ class FileviewsController < ApplicationController
   
   def index
 
-@allFiles = Attachment.all.reverse  
-          
+
+  @allFiles = Attachment.all  
 
 
 
